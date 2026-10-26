@@ -1,0 +1,14 @@
+{
+  "episodes": 50,
+  "success_rate": 0.0,
+  "heading_ok_rate": 0.44,
+  "collision_rate": 1.0,
+  "mean_pos_err_m": 25.866,
+  "mean_head_err_deg": 100.807,
+  "mean_steps": 14.46,
+  "mean_return": -11.612,
+  "failure_breakdown": {
+    "collision": 50
+  },
+  "policy": "models/ppo_seed1"
+}

@@ -1,0 +1,15 @@
+{
+  "episodes": 50,
+  "success_rate": 0.0,
+  "heading_ok_rate": 0.18,
+  "collision_rate": 0.64,
+  "mean_pos_err_m": 27.412,
+  "mean_head_err_deg": 86.508,
+  "mean_steps": 75.38,
+  "mean_return": -38.566,
+  "failure_breakdown": {
+    "timeout_wander": 18,
+    "collision": 32
+  },
+  "policy": "random"
+}
