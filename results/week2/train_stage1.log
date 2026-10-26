@@ -1,0 +1,38 @@
+training reward_version=v2a seed=0 steps=150000
+saved -> models/ppo_v2a_seed0.zip
+{
+  "episodes": 50,
+  "success_rate": 0.0,
+  "heading_ok_rate": 0.32,
+  "collision_rate": 0.02,
+  "mean_pos_err_m": 18.953,
+  "mean_head_err_deg": 69.451,
+  "mean_steps": 98.38,
+  "mean_return": -43.843,
+  "failure_breakdown": {
+    "timeout_wander": 49,
+    "collision": 1
+  },
+  "policy": "models/ppo_v2a_seed0"
+}
+training reward_version=v2b seed=0 steps=150000
+saved -> models/ppo_v2b_seed0.zip
+{
+  "episodes": 50,
+  "success_rate": 0.06,
+  "heading_ok_rate": 0.16,
+  "collision_rate": 0.08,
+  "mean_pos_err_m": 10.046,
+  "mean_head_err_deg": 90.79,
+  "mean_steps": 91.4,
+  "mean_return": -29.061,
+  "failure_breakdown": {
+    "timeout_wander": 38,
+    "collision": 4,
+    "success": 3,
+    "angled_parking": 3,
+    "overshoot_or_short": 2
+  },
+  "policy": "models/ppo_v2b_seed0"
+}
+WEEK2_STAGE1_DONE
