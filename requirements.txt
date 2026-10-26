@@ -1,0 +1,8 @@
+# CurbPark-RL Week 1 baseline — CPU only
+# torch 请按官方 CPU 源安装: pip install torch --index-url https://download.pytorch.org/whl/cpu
+gymnasium>=0.29
+highway-env>=1.8
+stable-baselines3>=2.3
+numpy
+pandas
+matplotlib
