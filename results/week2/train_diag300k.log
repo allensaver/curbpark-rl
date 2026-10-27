@@ -1,0 +1,20 @@
+continuing from models/ppo_v2b_seed0
+training reward_version=v2b seed=0 steps=150000
+saved -> models/ppo_v2b_seed0_300k.zip
+{
+  "episodes": 50,
+  "success_rate": 0.0,
+  "heading_ok_rate": 0.14,
+  "collision_rate": 0.28,
+  "mean_pos_err_m": 9.368,
+  "mean_head_err_deg": 87.418,
+  "mean_steps": 85.56,
+  "mean_return": -28.089,
+  "failure_breakdown": {
+    "timeout_wander": 34,
+    "angled_parking": 2,
+    "collision": 14
+  },
+  "policy": "models/ppo_v2b_seed0_300k"
+}
+DIAG_DONE

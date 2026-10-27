@@ -1,0 +1,35 @@
+training reward_version=v2b seed=1 steps=150000
+saved -> models/ppo_v2b_seed1.zip
+{
+  "episodes": 50,
+  "success_rate": 0.0,
+  "heading_ok_rate": 0.02,
+  "collision_rate": 0.04,
+  "mean_pos_err_m": 15.096,
+  "mean_head_err_deg": 70.155,
+  "mean_steps": 97.96,
+  "mean_return": -39.982,
+  "failure_breakdown": {
+    "timeout_wander": 46,
+    "angled_parking": 2,
+    "collision": 2
+  },
+  "policy": "models/ppo_v2b_seed1"
+}
+training reward_version=v2b seed=2 steps=150000
+saved -> models/ppo_v2b_seed2.zip
+{
+  "episodes": 50,
+  "success_rate": 0.0,
+  "heading_ok_rate": 0.34,
+  "collision_rate": 0.0,
+  "mean_pos_err_m": 20.053,
+  "mean_head_err_deg": 61.474,
+  "mean_steps": 100.0,
+  "mean_return": -46.039,
+  "failure_breakdown": {
+    "timeout_wander": 50
+  },
+  "policy": "models/ppo_v2b_seed2"
+}
+WEEK2_STAGE2_DONE
