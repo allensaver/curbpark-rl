@@ -1,0 +1,17 @@
+{
+  "episodes": 50,
+  "success_rate": 0.04,
+  "heading_ok_rate": 0.54,
+  "collision_rate": 0.92,
+  "mean_pos_err_m": 14.517,
+  "mean_head_err_deg": 38.314,
+  "mean_steps": 20.08,
+  "mean_return": -13.34,
+  "failure_breakdown": {
+    "overshoot_or_short": 1,
+    "collision": 46,
+    "success": 2,
+    "angled_parking": 1
+  },
+  "policy": "models/ppo_v2c_seed0"
+}
