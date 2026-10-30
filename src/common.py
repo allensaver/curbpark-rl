@@ -23,12 +23,15 @@ def make_env(seed: int | None = None, config: dict | None = None, reward_version
     """创建 parking-v0。默认使用连续动作与 Goal 观测（与 SB3 MultiInputPolicy 兼容）。
 
     reward_version: "v1" 基线（碰撞 -5）/ "v2a" 只改碰撞代价 -50 /
-    "v2b" v2a + Goal Region 区域奖励包装器（见 reward_v2.py）。
+    "v2b" v2a + Goal Region 区域奖励包装器（见 reward_v2.py）/
+    "v2c" 平衡调参：碰撞 -30 + 包装器配比上调（进度 0.30、精调 0.06、
+    终局 +30，设计见 results/v2c/v2c设计.md）。
     """
+    collision_reward = {"v1": -5, "v2a": -50, "v2b": -50, "v2c": -30}[reward_version]
     cfg = {
         "observation": {"type": "KinematicsGoal", "features": ["x", "y", "vx", "vy", "cos_h", "sin_h"], "scales": [100, 100, 5, 5, 1, 1], "normalize": False},
         "action": {"type": "ContinuousAction"},
-        "collision_reward": -5 if reward_version == "v1" else -50,
+        "collision_reward": collision_reward,
         "reward_speed_range": [0, 0],
     }
     if config:
@@ -40,6 +43,9 @@ def make_env(seed: int | None = None, config: dict | None = None, reward_version
     if reward_version == "v2b":
         from reward_v2 import GoalRegionRewardWrapper
         env = GoalRegionRewardWrapper(env)
+    elif reward_version == "v2c":
+        from reward_v2 import GoalRegionRewardWrapper
+        env = GoalRegionRewardWrapper(env, progress_w=0.30, adjust_w=0.06, final_bonus=30.0)
     if seed is not None:
         env.reset(seed=seed)
     return env

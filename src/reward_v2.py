@@ -14,6 +14,11 @@
           量级远小于近目标处的距离惩罚（约 −0.2/步），原地刷分不划算；
        4) 终局奖励：环境判定 is_success 终止时 +15。
        每步分量写入 info["reward_parts"]，便于事后核账。
+- v2c：平衡调参轮（非单因子消融，设计见 results/v2c/v2c设计.md）。
+       在 v2b 结构上只动配比：碰撞 −50 → −30（common.py）、进度权重
+       0.15 → 0.30、末端精调 0.03 → 0.06、终局奖励 +15 → +30；
+       区域一次性奖励（+4 / +8）不变。包装器以参数形式接收这些配比，
+       默认值即 v2b，保证旧版本可复现。
 """
 from __future__ import annotations
 
@@ -28,10 +33,18 @@ ADJUST_W = 0.03
 
 
 class GoalRegionRewardWrapper(gym.Wrapper):
-    """v2b 区域奖励包装器。不改变观测/动作空间，只改奖励。"""
+    """v2b 区域奖励包装器。不改变观测/动作空间，只改奖励。
 
-    def __init__(self, env):
+    progress_w / adjust_w / final_bonus 默认取 v2b 配比；v2c 在
+    common.make_env 里传入调参后的配比，其余结构与 v2b 完全一致。
+    """
+
+    def __init__(self, env, progress_w: float = PROGRESS_W,
+                 adjust_w: float = ADJUST_W, final_bonus: float = FINAL_BONUS):
         super().__init__(env)
+        self.progress_w = progress_w
+        self.adjust_w = adjust_w
+        self.final_bonus = final_bonus
         self._prev_pos_err: float | None = None
         self._got_region = False
         self._got_success_zone = False
@@ -56,7 +69,7 @@ class GoalRegionRewardWrapper(gym.Wrapper):
                  "adjust": 0.0, "final": 0.0}
 
         if self._prev_pos_err is not None:
-            progress = PROGRESS_W * (self._prev_pos_err - pos_err)
+            progress = self.progress_w * (self._prev_pos_err - pos_err)
             parts["progress"] = float(np.clip(progress, -0.5, 0.5))
         self._prev_pos_err = pos_err
 
@@ -64,13 +77,13 @@ class GoalRegionRewardWrapper(gym.Wrapper):
             if not self._got_region:
                 parts["region"] += REGION_BONUS
                 self._got_region = True
-            parts["adjust"] = ADJUST_W * max(0.0, 1.0 - head_err / 45.0)
+            parts["adjust"] = self.adjust_w * max(0.0, 1.0 - head_err / 45.0)
             if pos_err <= SUCCESS_POS and head_err <= SUCCESS_HEAD and not self._got_success_zone:
                 parts["region"] += SUCCESS_ZONE_BONUS
                 self._got_success_zone = True
 
         if terminated and info.get("is_success"):
-            parts["final"] = FINAL_BONUS
+            parts["final"] = self.final_bonus
 
         total = reward + parts["progress"] + parts["region"] + parts["adjust"] + parts["final"]
         info = dict(info)
